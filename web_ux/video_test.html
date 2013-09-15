@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+	<script type="text/javascript" src="utube_slides.js"></script>
+	<script type="text/javascript" src="swfobject/swfobject.js"></script>
+	<script type="text/javascript">
+		function startPlayer() {
+			//Optional: set index style
+			setIndexStyle(
+				"background-color: #222222; color: #FFFF00",	//active segment
+				"background-color: #EEEEEE; color: #000000"	//inactive segments
+			);
+
+			//Optional: Set youtube player dimensions (default is 640x480)
+			setVideoDims(640, 480);
+
+			initYoutubeAndSlides("qBtfh0uxGM8",
+				[
+		                        0,"10701png/page_1.png","Welcome",1,
+                		        77,"10701png/page_2.png","Administrative Stuff",1,
+		                        80,"10701png/page_3.png", "Important Stuff",2,
+                		        403,"10701png/page_4.png","Projects & Homeworks",2,
+					637,"10701png/page_5.png","Color Coding",2,
+					657,"10701png/page_6.png","Feedback",2,
+					711,"10701png/page_7.png","Outline",1,
+					792,"10701png/page_8.png","Who cares ? It is not indexed anyway",0,
+					842,"10701png/page_9.png","Programming with data",1
+				]
+			, "ytapiplayer"
+			, "slidedisplay"
+			, "index"
+			);
+		}
+	</script>
+  </head>
+  <body>
+	<table id="playerslidescombo" border=1>
+	<tr><td>
+	<div id="ytapiplayer" style="float:left;">
+		You need Flash player 8+ and JavaScript enabled to view this video.
+	</div>
+	</td><td></td><td>
+	<div id="slidedisplay" style="float:left;width:640px;height:480px" />
+	</td></tr>
+	<tr>
+	<td colspan=3>
+	<div id="index" style="max-height:100px;overflow:auto" />
+	</td></tr>
+	</table>
+
+	<script type="text/javascript">
+		startPlayer();	
+	</script>
+  </body>
+</html>
