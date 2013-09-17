@@ -32,7 +32,7 @@ function setIndexStyle(activeStyleString, inactiveStyleString) {
 //Parameters:
 //	videoId: Video Id in youtube
 //	slideConfig: A list that specifies slide configation. Each slide is specified by four elements (in order):
-//      	* Display time (in seconds)
+//      	* Display time (in seconds as a number or in hh:mm:ss format as a string)
 //      	* Image path
 //      	* Label in the index
 //      	* Indentation level in the index (Set to 0 in order not to in the index) [Currently 2 levels are supported]
@@ -50,6 +50,13 @@ function initYoutubeAndSlides(videoId, slideConfig
 
 	indexDiv = indexDivId;
 	slideDiv = slideDivId;
+
+	for(var i = 0; i < numSlides; i++) {
+		var offset = i * slideTupleWidth;
+		if(typeof slideList[offset] == "string") {
+			slideList[offset] = timeToSeconds(slideList[offset]);
+		}
+	}
 }
 
 function onYouTubePlayerReady(playerId) {
@@ -109,13 +116,18 @@ function gotoSlide(slideId) {
 	updateState();
 }
 
-function formatTime(timeInSeconds)
-{
+function formatTime(timeInSeconds) {
 	var out="";
 	timeInSeconds = timeInSeconds;
 	var hours = Math.floor(timeInSeconds / 3600);
 	var minutes = Math.floor((timeInSeconds % 3600) / 60);
 	var seconds = Math.floor(timeInSeconds % 60);
 	return hours + ":" + Math.floor(minutes/10) + minutes%10 + ":" + Math.floor(seconds/10) + seconds%10;
+}
+
+function timeToSeconds(timeString) {
+	var toks = timeString.split(":");
+	var seconds = parseInt(toks[0]) * 3600 + parseInt(toks[1]) * 60 + parseInt(toks[2]);
+	return seconds;
 }
 
