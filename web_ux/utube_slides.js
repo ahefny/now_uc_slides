@@ -18,6 +18,14 @@ var inactiveStyle="background-color: #FFFFFF; color: #000000";
 var utubeWidth = 640;
 var utubeHeight = 480;
 
+var useHTML5 = true;
+var videoId;
+var videoDiv;
+
+function setHTML5(use) {
+	useHTML5 = use;
+}
+
 function setVideoDims(width, height) {
 	utubeWidth = width;
 	utubeHeight = height;
@@ -30,7 +38,7 @@ function setIndexStyle(activeStyleString, inactiveStyleString) {
 
 //Initializes and starts player
 //Parameters:
-//	videoId: Video Id in youtube
+//	utVideoId: Video Id in youtube
 //	slideConfig: A list that specifies slide configation. Each slide is specified by four elements (in order):
 //      	* Display time (in seconds as a number or in hh:mm:ss format as a string)
 //      	* Image path
@@ -39,15 +47,10 @@ function setIndexStyle(activeStyleString, inactiveStyleString) {
 //	utubeDivId: Id of HTML DIV element to display YouTube player
 //	slideDivId: Id of HTML DIV element to display slides
 //	indexDivId: Id of HTML DIV element to display the index
-function initYoutubeAndSlides(videoId, slideConfig
+function initYoutubeAndSlides(utVideoId, slideConfig
 	, utubeDivId, slideDivId, indexDivId) {
 	slideList = slideConfig;
 	numSlides = slideList.length/slideTupleWidth;
-	var params = { allowScriptAccess: "always" };
-	var atts = { id: "myytplayer__AH13" };
-	swfobject.embedSWF("http://www.youtube.com/v/" + videoId + "?enablejsapi=1&playerapiid=ytplayer&version=3",
-                        utubeDivId, utubeWidth, utubeHeight, "8", null, null, params, atts);
-
 	indexDiv = indexDivId;
 	slideDiv = slideDivId;
 
@@ -57,14 +60,46 @@ function initYoutubeAndSlides(videoId, slideConfig
 			slideList[offset] = timeToSeconds(slideList[offset]);
 		}
 	}
+
+	if(!useHTML5) {
+		var params = { allowScriptAccess: "always" };
+		var atts = { id: "myytplayer__AH13" };
+		
+		swfobject.embedSWF("http://www.youtube.com/v/" + utVideoId + "?enablejsapi=1&playerapiid=ytplayer&version=3",
+			utubeDivId, utubeWidth, utubeHeight, "8", null, null, params, atts);
+	} else {
+		videoId = utVideoId;
+		videoDiv = utubeDivId;
+
+		//load IFrame API
+		var tag = document.createElement('script');
+		tag.src = "https://www.youtube.com/iframe_api";
+		var firstScriptTag = document.getElementsByTagName('script')[0];
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+	}
 }
 
 function onYouTubePlayerReady(playerId) {
-	ytPlayer = document.getElementById("myytplayer__AH13");
+	if(!useHTML5) {
+		ytPlayer = document.getElementById("myytplayer__AH13");
+	}
+
 	buildIndex();
 	ytPlayer.playVideo();
 	window.setInterval(updateState, 200);
 	updateState();
+}
+
+//HTML 5 Initialization
+function onYouTubeIframeAPIReady() {
+	ytPlayer = new YT.Player(videoDiv, {
+        	height: utubeHeight,
+          	width: utubeWidth,
+          	videoId: videoId,
+          	events: {
+            		'onReady': onYouTubePlayerReady
+          	}
+	});
 }
 
 function buildIndex() {
