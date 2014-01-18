@@ -1,0 +1,10 @@
+qBtfh0uxGM8
+0,"10701png/page_1.png","Welcome",1,
+77,"10701png/page_2.png","Administrative Stuff",1,
+80,"10701png/page_3.png", "Important Stuff",2,
+403,"10701png/page_4.png","Projects & Homeworks",2,
+637,"10701png/page_5.png","Color Coding",2,
+657,"10701png/page_6.png","Feedback",2,
+711,"10701png/page_7.png","Outline",1,
+792,"10701png/page_8.png","Who cares ? It is not indexed anyway",0,
+842,"10701png/page_9.png","Programming with data",1
